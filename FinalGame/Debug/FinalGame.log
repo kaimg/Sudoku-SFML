@@ -1,0 +1,46 @@
+﻿  main.cpp
+c:\users\lenovo\source\repos\finalgame\finalgame\solver.h(46): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(222): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(342): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(356): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(358): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(362): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(364): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(375): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(377): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(385): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(387): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(395): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(397): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(405): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(407): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(415): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(417): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(425): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(427): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(435): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(437): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(446): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(448): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(457): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(459): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(470): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(471): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(472): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(473): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(474): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(475): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(476): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(477): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(478): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(479): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(480): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(488): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(500): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(509): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(516): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(530): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(206): warning C4101: 'timet': unreferenced local variable
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(201): warning C4101: 'number1': unreferenced local variable
+c:\users\lenovo\source\repos\finalgame\finalgame\main.cpp(120): warning C4101: 'sd': unreferenced local variable
+  FinalGame.vcxproj -> C:\Users\lenovo\source\repos\FinalGame\Debug\FinalGame.exe
