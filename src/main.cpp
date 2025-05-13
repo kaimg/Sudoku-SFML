@@ -7,7 +7,6 @@
 #include <fstream>
 #include "solver.h"
 #include "filler.h"
-#include <Windows.h>
 using namespace sf;
 bool isdMenu = false;
 int delelle = 0; bool isMenu = 1;
@@ -16,13 +15,13 @@ void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff
 {
 	int menunum = 0;
 	Image record;
-	record.loadFromFile("images/menu7.png");
+	record.loadFromFile("resources/images/menu/menu7.png");
 	record.createMaskFromColor(Color::White);
 	Texture main, about, exit, background, recordt;
-	background.loadFromFile("images/fundo-inicio.jpg");
-	main.loadFromFile("images/menu.png");
-	about.loadFromFile("images/menu1.png");
-	exit.loadFromFile("images/menu2.png");
+	background.loadFromFile("resources/images/menu/fundo-inicio.jpg");
+	main.loadFromFile("resources/images/menu/menu.png");
+	about.loadFromFile("resources/images/menu/menu1.png");
+	exit.loadFromFile("resources/images/menu/menu2.png");
 	recordt.loadFromImage(record);
 	Sprite menumain(main), menuabout(about), menuexit(exit), menubackground(background), menurecord(recordt);
 	menubackground.setPosition(0, 0);
@@ -67,11 +66,11 @@ void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff
 void menum(RenderWindow& window, bool playMusic)
 {
 	Texture measy, mmedium, mhard, background, mtimed;
-	background.loadFromFile("images/fundo-inicio.jpg");
-	measy.loadFromFile("images/menu3.png");
-	mmedium.loadFromFile("images/menu4.png");
-	mhard.loadFromFile("images/menu5.png");
-	mtimed.loadFromFile("images/menu6.png");
+	background.loadFromFile("resources/images/menu/fundo-inicio.jpg");
+	measy.loadFromFile("resources/images/menu/menu3.png");
+	mmedium.loadFromFile("resources/images/menu/menu4.png");
+	mhard.loadFromFile("resources/images/menu/menu5.png");
+	mtimed.loadFromFile("resources/images/menu/menu6.png");
 	Sprite menu1(measy), menu2(mmedium), menu3(mhard), menubackground(background), menu4(mtimed);
 	menu1.setPosition(80, 200);
 	menu2.setPosition(390, 200);
@@ -101,7 +100,7 @@ void setTimeLimit(int minutes, int time, Text text, Font font, RenderWindow& win
 	Text ftext;
 	ftext.setFont(font);
 	ftext.setCharacterSize(24);
-	ftext.setFillColor(sf::Color::Color(20, 20, 60));
+	ftext.setFillColor(sf::Color(20, 20, 60));
 	ftext.setStyle(sf::Text::Bold);
 	ftext.setPosition(310, 200);
 	ftext.setString("YOU LOSE!");
@@ -135,23 +134,23 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(720, 585), "Sudoku", Style::Close | Style::Titlebar);
 	window.setFramerateLimit(60);
 	SoundBuffer buffer;
-	buffer.loadFromFile("images/click.wav");
+	buffer.loadFromFile("resources/audio/click.wav");
 	Sound sound;
 	sound.setBuffer(buffer);
 	SoundBuffer bufferw;
-	bufferw.loadFromFile("images/winsound.wav");
+	bufferw.loadFromFile("resources/audio/winsound.wav");
 	Sound winsound;
 	winsound.setBuffer(bufferw);
 	SoundBuffer bufferl;
-	bufferl.loadFromFile("images/gamedie.wav");
+	bufferl.loadFromFile("resources/audio/gamedie.wav");
 	Sound losesound;
 	losesound.setBuffer(bufferl);
 	Music back;
-	back.openFromFile("images/snowfall.ogg");
+	back.openFromFile("resources/audio/snowfall.ogg");
 	back.setVolume(12);
 	back.play();
 	Font font;
-	font.loadFromFile("images/bebas.ttf");
+	font.loadFromFile("resources/fonts/bebas.ttf");
 	menu(window, sound, playMusic, font, buff, 0);
 	if (isdMenu == true) { menum(window, playMusic); }
 	if (playMusic) { back.setVolume(0); losesound.setVolume(0); winsound.setVolume(0); sound.setVolume(0); }
@@ -160,22 +159,22 @@ int main()
 	finish();
 	print();
 	Image icon;
-	icon.loadFromFile("images/icon.png");
+	icon.loadFromFile("resources/images/game/icon.png");
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	Texture main;
-	main.loadFromFile("images/menu.png");
+	main.loadFromFile("resources/images/menu/menu.png");
 	Sprite mmain(main);
 	mmain.setPosition(605, 80);
 	mmain.setScale(Vector2f(0.5, 0.5));
 	Texture exit;
-	exit.loadFromFile("images/menu2.png");
+	exit.loadFromFile("resources/images/menu/menu2.png");
 	Sprite mexit(exit);
 	mexit.setPosition(605, 380);
 	mexit.setScale(Vector2f(0.5, 0.5));
 	Image heroimage;
-	heroimage.loadFromFile("images/boardnew.png");
+	heroimage.loadFromFile("resources/images/game/boardnew.png");
 	Image numberstile;
-	numberstile.loadFromFile("images/numbergrid.png");
+	numberstile.loadFromFile("resources/images/game/numbergrid.png");
 	numberstile.createMaskFromColor(Color::White);
 	Texture numbers;
 	numbers.loadFromImage(numberstile);
@@ -194,7 +193,7 @@ int main()
 	Text text;
 	text.setFont(font);
 	text.setCharacterSize(24);
-	text.setFillColor(sf::Color::Color(20, 20, 60));
+	text.setFillColor(sf::Color(20, 20, 60));
 	text.setStyle(sf::Text::Bold);
 	text.setPosition(600, 0);
 	int x = -1, y = -1, x1, y1;
@@ -550,7 +549,7 @@ void finalscreen(RenderWindow& window, Text text, Font font, Sound winsound, boo
 		Text ftext;
 		ftext.setFont(font);
 		ftext.setCharacterSize(24);
-		ftext.setFillColor(sf::Color::Color(20, 20, 60));
+		ftext.setFillColor(sf::Color(20, 20, 60));
 		ftext.setStyle(sf::Text::Bold);
 		ftext.setPosition(310, 200);
 		ftext.setString("YOU WIN!");
