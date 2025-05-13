@@ -11,24 +11,66 @@ using namespace sf;
 bool isdMenu = false;
 int delelle = 0; bool isMenu = 1;
 bool settimelimit;
+
+namespace FILES {
+    namespace MENU {
+        namespace IMAGES {
+            const std::string BACKGROUND = "resources/images/menu/background.jpg";
+            const std::string MENU = "resources/images/menu/menu.png";
+            const std::string MENU1 = "resources/images/menu/menu1.png";
+            const std::string MENU2 = "resources/images/menu/menu2.png";
+            const std::string MENU3 = "resources/images/menu/menu3.png";
+            const std::string MENU4 = "resources/images/menu/menu4.png";
+            const std::string MENU5 = "resources/images/menu/menu5.png";
+            const std::string MENU6 = "resources/images/menu/menu6.png";
+            const std::string MENU7 = "resources/images/menu/menu7.png";
+        }
+
+        namespace SOUNDS {
+            const std::string CLICK = "resources/audio/click.wav";
+            const std::string WIN = "resources/audio/winsound.wav";
+            const std::string LOSE = "resources/audio/gamedie.wav";
+            const std::string MUSIC = "resources/audio/snowfall.ogg";
+        }
+    }
+
+    namespace GAME {
+        namespace IMAGES {
+            const std::string ICON = "resources/images/game/icon.png";
+            const std::string BOARD = "resources/images/game/boardnew.png";
+            const std::string NUMBER_GRID = "resources/images/game/numbergrid.png";
+        }
+
+        namespace FONTS {
+            const std::string BEBAS = "resources/fonts/bebas.ttf";
+        }
+    }
+}
+
+namespace DIFFICULTY {
+    const int EASY = 36;
+    const int MEDIUM = 48;
+    const int HARD = 60;
+    const int DEFAULT = 48;
+}
 void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff, int sd)
 {
 	int menunum = 0;
 	Image record;
-	record.loadFromFile("resources/images/menu/menu7.png");
+	record.loadFromFile(FILES::MENU::IMAGES::MENU7);
 	record.createMaskFromColor(Color::White);
 	Texture main, about, exit, background, recordt;
-	background.loadFromFile("resources/images/menu/fundo-inicio.jpg");
-	main.loadFromFile("resources/images/menu/menu.png");
-	about.loadFromFile("resources/images/menu/menu1.png");
-	exit.loadFromFile("resources/images/menu/menu2.png");
+	background.loadFromFile(FILES::MENU::IMAGES::BACKGROUND);
+	main.loadFromFile(FILES::MENU::IMAGES::MENU);
+	about.loadFromFile(FILES::MENU::IMAGES::MENU1);
+	exit.loadFromFile(FILES::MENU::IMAGES::MENU2);
 	recordt.loadFromImage(record);
-	Sprite menumain(main), menuabout(about), menuexit(exit), menubackground(background), menurecord(recordt);
+	Sprite menuMain(main), menuAbout(about), menuExit(exit), menubackground(background), menuRecord(recordt);
 	menubackground.setPosition(0, 0);
-	menumain.setPosition(250, 240);
-	menuabout.setPosition(250, 340);
-	menuexit.setPosition(250, 440);
-	menurecord.setPosition(0, 540);
+	menuMain.setPosition(250, 240);
+	menuAbout.setPosition(250, 340);
+	menuExit.setPosition(250, 440);
+	menuRecord.setPosition(0, 540);
 	Text ftext;
 	ftext.setFont(font);
 	ftext.setCharacterSize(32);
@@ -47,11 +89,11 @@ void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff
 	}
 	while (isMenu)
 	{
-		menumain.setColor(Color::White); menuabout.setColor(Color::White); menuexit.setColor(Color::White); menurecord.setColor(Color::White);
+		menuMain.setColor(Color::White); menuAbout.setColor(Color::White); menuExit.setColor(Color::White); menuRecord.setColor(Color::White);
 		//window.clear(Color::White);
-		if (IntRect(250, 240, 225, 45).contains(Mouse::getPosition(window))) { menumain.setColor(Color::Cyan); menunum = 1; }
-		if (IntRect(250, 340, 225, 45).contains(Mouse::getPosition(window))) { menuabout.setColor(Color::Cyan); menunum = 2; }
-		if (IntRect(250, 440, 225, 45).contains(Mouse::getPosition(window))) { menuexit.setColor(Color::Cyan); menunum = 3; }
+		if (IntRect(250, 240, 225, 45).contains(Mouse::getPosition(window))) { menuMain.setColor(Color::Cyan); menunum = 1; }
+		if (IntRect(250, 340, 225, 45).contains(Mouse::getPosition(window))) { menuAbout.setColor(Color::Cyan); menunum = 2; }
+		if (IntRect(250, 440, 225, 45).contains(Mouse::getPosition(window))) { menuExit.setColor(Color::Cyan); menunum = 3; }
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
 			sound.play();
@@ -59,18 +101,18 @@ void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff
 			if (menunum == 2) { isdMenu = true; isMenu = false; }
 			if (menunum == 3) { window.close(); isMenu = false; }
 		}
-		window.draw(menubackground); window.draw(menumain); window.draw(menuabout); window.draw(menuexit); window.draw(menurecord);
+		window.draw(menubackground); window.draw(menuMain); window.draw(menuAbout); window.draw(menuExit); window.draw(menuRecord);
 		window.draw(ftext); window.display();
 	};
 }
 void menum(RenderWindow& window, bool playMusic)
 {
 	Texture measy, mmedium, mhard, background, mtimed;
-	background.loadFromFile("resources/images/menu/fundo-inicio.jpg");
-	measy.loadFromFile("resources/images/menu/menu3.png");
-	mmedium.loadFromFile("resources/images/menu/menu4.png");
-	mhard.loadFromFile("resources/images/menu/menu5.png");
-	mtimed.loadFromFile("resources/images/menu/menu6.png");
+	background.loadFromFile(FILES::MENU::IMAGES::BACKGROUND);
+	measy.loadFromFile(FILES::MENU::IMAGES::MENU3);
+	mmedium.loadFromFile(FILES::MENU::IMAGES::MENU4);
+	mhard.loadFromFile(FILES::MENU::IMAGES::MENU5);
+	mtimed.loadFromFile(FILES::MENU::IMAGES::MENU6);
 	Sprite menu1(measy), menu2(mmedium), menu3(mhard), menubackground(background), menu4(mtimed);
 	menu1.setPosition(80, 200);
 	menu2.setPosition(390, 200);
@@ -86,10 +128,10 @@ void menum(RenderWindow& window, bool playMusic)
 		if (IntRect(390, 300, 225, 45).contains(Mouse::getPosition(window))) { menu4.setColor(Color::Cyan); menudif = 4; }
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
-			if (menudif == 1) { playMusic = false; delelle = 36; isdMenu = false; }
-			if (menudif == 2) { delelle = 48; isdMenu = false; }
-			if (menudif == 3) { delelle = 60; isdMenu = false; }
-			if (menudif == 4) { settimelimit = true; delelle = 48;  isdMenu = false; }
+			if (menudif == 1) { playMusic = false; delelle = DIFFICULTY::EASY; isdMenu = false; }
+			if (menudif == 2) { delelle = DIFFICULTY::MEDIUM; isdMenu = false; }
+			if (menudif == 3) { delelle = DIFFICULTY::HARD; isdMenu = false; }
+			if (menudif == 4) { settimelimit = true; delelle = DIFFICULTY::DEFAULT;  isdMenu = false; }
 		}window.clear(); window.draw(menubackground); window.draw(menu1); window.draw(menu2); window.draw(menu3); window.draw(menu4); window.display();
 	}
 }
@@ -134,23 +176,23 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(720, 585), "Sudoku", Style::Close | Style::Titlebar);
 	window.setFramerateLimit(60);
 	SoundBuffer buffer;
-	buffer.loadFromFile("resources/audio/click.wav");
+	buffer.loadFromFile(FILES::MENU::SOUNDS::CLICK);
 	Sound sound;
 	sound.setBuffer(buffer);
 	SoundBuffer bufferw;
-	bufferw.loadFromFile("resources/audio/winsound.wav");
+	bufferw.loadFromFile(FILES::MENU::SOUNDS::WIN);
 	Sound winsound;
 	winsound.setBuffer(bufferw);
 	SoundBuffer bufferl;
-	bufferl.loadFromFile("resources/audio/gamedie.wav");
+	bufferl.loadFromFile(FILES::MENU::SOUNDS::LOSE);
 	Sound losesound;
 	losesound.setBuffer(bufferl);
 	Music back;
-	back.openFromFile("resources/audio/snowfall.ogg");
+	back.openFromFile(FILES::MENU::SOUNDS::MUSIC);
 	back.setVolume(12);
 	back.play();
 	Font font;
-	font.loadFromFile("resources/fonts/bebas.ttf");
+	font.loadFromFile(FILES::GAME::FONTS::BEBAS);
 	menu(window, sound, playMusic, font, buff, 0);
 	if (isdMenu == true) { menum(window, playMusic); }
 	if (playMusic) { back.setVolume(0); losesound.setVolume(0); winsound.setVolume(0); sound.setVolume(0); }
@@ -159,22 +201,22 @@ int main()
 	finish();
 	print();
 	Image icon;
-	icon.loadFromFile("resources/images/game/icon.png");
+	icon.loadFromFile(FILES::GAME::IMAGES::ICON);
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	Texture main;
-	main.loadFromFile("resources/images/menu/menu.png");
+	main.loadFromFile(FILES::MENU::IMAGES::MENU);
 	Sprite mmain(main);
 	mmain.setPosition(605, 80);
 	mmain.setScale(Vector2f(0.5, 0.5));
 	Texture exit;
-	exit.loadFromFile("resources/images/menu/menu2.png");
+	exit.loadFromFile(FILES::MENU::IMAGES::MENU2);
 	Sprite mexit(exit);
 	mexit.setPosition(605, 380);
 	mexit.setScale(Vector2f(0.5, 0.5));
 	Image heroimage;
-	heroimage.loadFromFile("resources/images/game/boardnew.png");
+	heroimage.loadFromFile(FILES::GAME::IMAGES::BOARD);
 	Image numberstile;
-	numberstile.loadFromFile("resources/images/game/numbergrid.png");
+	numberstile.loadFromFile(FILES::GAME::IMAGES::NUMBER_GRID);
 	numberstile.createMaskFromColor(Color::White);
 	Texture numbers;
 	numbers.loadFromImage(numberstile);
