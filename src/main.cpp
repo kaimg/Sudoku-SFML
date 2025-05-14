@@ -7,11 +7,7 @@
 #include <fstream>
 #include "solver.h"
 #include "filler.h"
-using namespace sf;
-bool isdMenu = false;
-int delelle = 0; bool isMenu = 1;
-bool settimelimit;
-
+using namespace sf; 
 namespace FILES {
     namespace MENU {
         namespace IMAGES {
@@ -52,8 +48,37 @@ namespace DIFFICULTY {
     const int MEDIUM = 48;
     const int HARD = 60;
     const int DEFAULT = 48;
+	
+	namespace OPTION {
+		const int NONE = 0;
+		const int EASY = 1;
+		const int MEDIUM = 2;
+		const int HARD = 3;
+		const int TIMED = 4;
+	}
 }
 
+
+bool isDifficultyMenuActive = false;
+bool isTimeLimitActive = false;
+bool isMainMenuActive = true;
+
+int selectedDifficulty = DIFFICULTY::OPTION::NONE;
+
+namespace UI {
+	namespace POSITION {
+		const sf::Vector2f BACKGROUND(0.f, 0.f);
+        const sf::Vector2f MENU_MAIN(250.f, 240.f);
+        const sf::Vector2f MENU_ABOUT(250.f, 340.f);
+        const sf::Vector2f MAIN_MENU_EXIT(250.f, 440.f);
+        const sf::Vector2f MENU_RECORD(0.f, 540.f);
+		const sf::Vector2f MENU_OPTIONS(80.f, 200.f);
+        const sf::Vector2f MENU_EXIT(390.f, 200.f);
+        const sf::Vector2f MENU_EASY(80.f, 300.f);
+        const sf::Vector2f MENU_MEDIUM(390.f, 300.f);
+		
+	}
+}
 sf::Text createMessage(const std::string& message, const sf::Font& font, unsigned int size = 24, const sf::Color& color = sf::Color(20, 20, 60), float x = 310, float y = 200)
 {
 	sf::Text text;
@@ -78,23 +103,23 @@ void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff
 	exit.loadFromFile(FILES::MENU::IMAGES::MENU2);
 	recordt.loadFromImage(record);
 	Sprite menuMain(main), menuAbout(about), menuExit(exit), menuBackground(background), menuRecord(recordt);
-	menuBackground.setPosition(0, 0);
-	menuMain.setPosition(250, 240);
-	menuAbout.setPosition(250, 340);
-	menuExit.setPosition(250, 440);
-	menuRecord.setPosition(0, 540);
+	menuBackground.setPosition(UI::POSITION::BACKGROUND);
+	menuMain.setPosition(UI::POSITION::MENU_MAIN);
+	menuAbout.setPosition(UI::POSITION::MENU_ABOUT);
+	menuExit.setPosition(UI::POSITION::MAIN_MENU_EXIT);
+	menuRecord.setPosition(UI::POSITION::MENU_RECORD);
 	sf::Text bestResultText = createMessage("YOU DON'T WIN YET", font, 32, sf::Color::Black, 130, 540);
 	std::ostringstream stringh, stringd;
 	if (buff <= 0 || buff > 300)
 	{
-		sf::Text bestResultText = createMessage("YOU DON'T WIN YET", font, 32, sf::Color::Black, 130, 540);
+		sf::Text bestResultText;
 	}
 	else {
 		int ftime = buff / 60, fminutes = buff - (ftime * 60);
 		stringh << fminutes; stringd << ftime;
 		sf::Text bestResultText = createMessage(String(stringd.str() + " : " + stringh.str()), font, 32, sf::Color::Black, 130, 540);
 	}
-	while (isMenu)
+	while (isMainMenuActive)
 	{
 		menuMain.setColor(Color::White); menuAbout.setColor(Color::White); menuExit.setColor(Color::White); menuRecord.setColor(Color::White);
 		//window.clear(Color::White);
@@ -104,9 +129,9 @@ void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
 			sound.play();
-			if (menunum == 1) { isMenu = false; }
-			if (menunum == 2) { isdMenu = true; isMenu = false; }
-			if (menunum == 3) { window.close(); isMenu = false; }
+			if (menunum == 1) { isMainMenuActive = false; }
+			if (menunum == 2) { isDifficultyMenuActive = true; isMainMenuActive = false; }
+			if (menunum == 3) { window.close(); isMainMenuActive = false; }
 		}
 		window.draw(menuBackground); window.draw(menuMain); window.draw(menuAbout); window.draw(menuExit); window.draw(menuRecord);
 		window.draw(bestResultText); window.display();
@@ -121,28 +146,29 @@ void menum(RenderWindow& window, bool playMusic)
 	menuHard.loadFromFile(FILES::MENU::IMAGES::MENU5);
 	menuTimed.loadFromFile(FILES::MENU::IMAGES::MENU6);
 	Sprite menu1(menuEasy), menu2(menuMedium), menu3(menuHard), menuBackground(background), menu4(menuTimed);
-	menu1.setPosition(80, 200);
-	menu2.setPosition(390, 200);
-	menu3.setPosition(80, 300);
-	menu4.setPosition(390, 300);
-	int menuDifficulty = 0;
-	while (isdMenu)
+	menu1.setPosition(UI::POSITION::MENU_OPTIONS);
+	menu2.setPosition(UI::POSITION::MENU_EXIT);
+	menu3.setPosition(UI::POSITION::MENU_EASY);
+	menu4.setPosition(UI::POSITION::MENU_MEDIUM);
+	int menuDifficulty = DIFFICULTY::OPTION::NONE;
+	while (isDifficultyMenuActive)
 	{
 		menu1.setColor(Color::White); menu2.setColor(Color::White); menu3.setColor(Color::White); menu4.setColor(Color::White);
-		if (IntRect(80, 200, 225, 45).contains(Mouse::getPosition(window))) { menu1.setColor(Color::Cyan); menuDifficulty = 1; }
-		if (IntRect(390, 200, 225, 45).contains(Mouse::getPosition(window))) { menu2.setColor(Color::Cyan); menuDifficulty = 2; }
-		if (IntRect(80, 300, 225, 45).contains(Mouse::getPosition(window))) { menu3.setColor(Color::Cyan); menuDifficulty = 3; }
-		if (IntRect(390, 300, 225, 45).contains(Mouse::getPosition(window))) { menu4.setColor(Color::Cyan); menuDifficulty = 4; }
+		if (IntRect(80, 200, 225, 45).contains(Mouse::getPosition(window))) { menu1.setColor(Color::Cyan); menuDifficulty = DIFFICULTY::OPTION::EASY; }
+		if (IntRect(390, 200, 225, 45).contains(Mouse::getPosition(window))) { menu2.setColor(Color::Cyan); menuDifficulty = DIFFICULTY::OPTION::MEDIUM; }
+		if (IntRect(80, 300, 225, 45).contains(Mouse::getPosition(window))) { menu3.setColor(Color::Cyan); menuDifficulty = DIFFICULTY::OPTION::HARD; }
+		if (IntRect(390, 300, 225, 45).contains(Mouse::getPosition(window))) { menu4.setColor(Color::Cyan); menuDifficulty = DIFFICULTY::OPTION::TIMED; }
+		
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
-			if (menuDifficulty == 1) { playMusic = false; delelle = DIFFICULTY::EASY; isdMenu = false; }
-			if (menuDifficulty == 2) { delelle = DIFFICULTY::MEDIUM; isdMenu = false; }
-			if (menuDifficulty == 3) { delelle = DIFFICULTY::HARD; isdMenu = false; }
-			if (menuDifficulty == 4) { settimelimit = true; delelle = DIFFICULTY::DEFAULT;  isdMenu = false; }
+			if (menuDifficulty == DIFFICULTY::OPTION::EASY) { playMusic = false; selectedDifficulty = DIFFICULTY::EASY; isDifficultyMenuActive = false; }
+			if (menuDifficulty == DIFFICULTY::OPTION::MEDIUM) { selectedDifficulty = DIFFICULTY::MEDIUM; isDifficultyMenuActive = false; }
+			if (menuDifficulty == DIFFICULTY::OPTION::HARD) { selectedDifficulty = DIFFICULTY::HARD; isDifficultyMenuActive = false; }
+			if (menuDifficulty == DIFFICULTY::OPTION::TIMED) { isTimeLimitActive = true; selectedDifficulty = DIFFICULTY::DEFAULT;  isDifficultyMenuActive = false; }
 		}window.clear(); window.draw(menuBackground); window.draw(menu1); window.draw(menu2); window.draw(menu3); window.draw(menu4); window.display();
 	}
 }
-void finalscreen(RenderWindow& window, Text text, Font font, Sound winsound, bool playMusic, int second, int buff, bool start);
+void finalScreen(RenderWindow& window, Text text, Font font, Sound winsound, bool playMusic, int second, int buff, bool start);
 void setTimeLimit(int minutes, int time, Text text, Font font, RenderWindow& window, Sound losesound, bool playMusic)
 {   
 	if (playMusic) { losesound.setVolume(100); losesound.play(); }
@@ -195,10 +221,10 @@ int main()
 	Font font;
 	font.loadFromFile(FILES::GAME::FONTS::BEBAS);
 	menu(window, sound, playMusic, font, buff, 0);
-	if (isdMenu == true) { menum(window, playMusic); }
+	if (isDifficultyMenuActive == true) { menum(window, playMusic); }
 	if (playMusic) { back.setVolume(0); losesound.setVolume(0); winsound.setVolume(0); sound.setVolume(0); }
-	a = delelle;
-	if (a == 0) a = 48;
+	a = selectedDifficulty;
+	if (a == 0) { a = DIFFICULTY::DEFAULT; }
 	finish();
 	print();
 	Image icon;
@@ -261,12 +287,18 @@ int main()
 		second = timet;
 		if (timet % 60 == 0) { minutes = timet / 60; }
 		timet = timet - (minutes * 60);
-		if (settimelimit == true) { setTimeLimit(minutes, timet, gameOverText, font, window, losesound, playMusic); }
+		if (isTimeLimitActive == true) { setTimeLimit(minutes, timet, gameOverText, font, window, losesound, playMusic); }
 		std::ostringstream strings, stringm;
 		stringm << minutes; strings << timet;
-		if (timet < 10 && minutes < 10)gameOverText.setString("Game time\n\t\t\t0" + stringm.str() + " : 0" + strings.str());
-		else if (timet < 10)gameOverText.setString("Game time\n\t\t\t" + stringm.str() + " : " + "0" + strings.str());
-		else gameOverText.setString("Game time\n\t\t\t" + stringm.str() + " : " + strings.str());
+		if (timet < 10 && minutes < 10){
+			gameOverText.setString("Game time\n\t\t\t0" + stringm.str() + " : 0" + strings.str());
+		}
+		else if (timet < 10){
+			gameOverText.setString("Game time\n\t\t\t" + stringm.str() + " : " + "0" + strings.str());
+		}
+		else {
+			gameOverText.setString("Game time\n\t\t\t" + stringm.str() + " : " + strings.str());
+		}
 		gameOverText.setPosition(600, 0);
 		x1 = x; y1 = y;
 		while (window.pollEvent(event))
@@ -296,77 +328,45 @@ int main()
 				switch (event.key.code)
 				{
 				case sf::Keyboard::Numpad0:
-					if (schecker[y][x] == 0) {
-						sudoku[y][x] = 0;
-					}
+					if (schecker[y][x] == 0) { sudoku[y][x] = 0; }
 					break;
 				case sf::Keyboard::Numpad1:
-					if (schecker[y][x] == 0) {
-						sudoku[y][x] = 1; isTrue();
-					}
+				case sf::Keyboard::Num1:
+					if (schecker[y][x] == 0) { sudoku[y][x] = 1; isTrue(); }//if (solsudoku[y][x] != sudoku[y][x]) numbersS.;
 					break;
 				case sf::Keyboard::Numpad2:
-					if (schecker[y][x] == 0) {
-						sudoku[y][x] = 2; isTrue();
-					}
+				case sf::Keyboard::Num2:
+					if (schecker[y][x] == 0) { sudoku[y][x] = 2; isTrue(); }
 					break;
 				case sf::Keyboard::Numpad3:
+				case sf::Keyboard::Num3:
 					if (schecker[y][x] == 0) { sudoku[y][x] = 3; isTrue(); }
 					
 					break;
 				case sf::Keyboard::Numpad4:
+				case sf::Keyboard::Num4:
 					if (schecker[y][x] == 0) { sudoku[y][x] = 4; isTrue();}
 					break;
 				case sf::Keyboard::Numpad5:
-					if (schecker[y][x] == 0) { sudoku[y][x] = 5; isTrue(); }
-					break;
-				case sf::Keyboard::Numpad6:
-					if (schecker[y][x] == 0) { sudoku[y][x] = 6; isTrue(); }
-					break;
-				case sf::Keyboard::Numpad7:
-					if (schecker[y][x] == 0) { sudoku[y][x] = 7; isTrue(); }
-					break;
-				case sf::Keyboard::Numpad8:
-					if (schecker[y][x] == 0) { sudoku[y][x] = 8; isTrue(); }
-					break;
-				case sf::Keyboard::Numpad9:
-					if (schecker[y][x] == 0) { sudoku[y][x] = 9; isTrue(); }
-				break; case sf::Keyboard::Num0:
-					if (schecker[y][x] == 0) {
-						sudoku[y][x] = 0;
-					}
-					break;
-				case sf::Keyboard::Num1:
-					if (schecker[y][x] == 0) {
-						sudoku[y][x] = 1; isTrue();
-					} //if (solsudoku[y][x] != sudoku[y][x]) numbersS.;
-					break;
-				case sf::Keyboard::Num2:
-					if (schecker[y][x] == 0) {
-						sudoku[y][x] = 2; isTrue();
-					}
-					break;
-				case sf::Keyboard::Num3:
-					if (schecker[y][x] == 0) { sudoku[y][x] = 3; isTrue(); }
-					break;
-				case sf::Keyboard::Num4:
-					if (schecker[y][x] == 0) { sudoku[y][x] = 4; isTrue(); }
-					break;
 				case sf::Keyboard::Num5:
 					if (schecker[y][x] == 0) { sudoku[y][x] = 5; isTrue(); }
 					break;
+				case sf::Keyboard::Numpad6:
 				case sf::Keyboard::Num6:
 					if (schecker[y][x] == 0) { sudoku[y][x] = 6; isTrue(); }
 					break;
+				case sf::Keyboard::Numpad7:
 				case sf::Keyboard::Num7:
 					if (schecker[y][x] == 0) { sudoku[y][x] = 7; isTrue(); }
 					break;
+				case sf::Keyboard::Numpad8:
 				case sf::Keyboard::Num8:
 					if (schecker[y][x] == 0) { sudoku[y][x] = 8; isTrue(); }
 					break;
+				case sf::Keyboard::Numpad9:
 				case sf::Keyboard::Num9:
 					if (schecker[y][x] == 0) { sudoku[y][x] = 9; isTrue(); }
-					break;
+					break; 
 				}
 			}
 		}
@@ -575,10 +575,10 @@ int main()
 		window.draw(mmain); 
 		window.draw(mexit);
 		window.display();
-		if (isTue == 1) { finalscreen(window, gameOverText, font, winsound, playMusic, second, buff, start); }
+		if (isTue == 1) { finalScreen(window, gameOverText, font, winsound, playMusic, second, buff, start); }
 	}
 }
-void finalscreen(RenderWindow& window, Text text, Font font, Sound winsound, bool playMusic, int second, int buff, bool start)
+void finalScreen(RenderWindow& window, Text text, Font font, Sound winsound, bool playMusic, int second, int buff, bool start)
 {
 	//isTrue();
 	if (isTue == true && second > 10)
