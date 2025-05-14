@@ -53,6 +53,18 @@ namespace DIFFICULTY {
     const int HARD = 60;
     const int DEFAULT = 48;
 }
+
+sf::Text createMessage(const std::string& message, const sf::Font& font, unsigned int size = 24, const sf::Color& color = sf::Color(20, 20, 60), float x = 310, float y = 200)
+{
+	sf::Text text;
+	text.setFont(font);
+	text.setCharacterSize(size);
+	text.setFillColor(color);
+	text.setStyle(sf::Text::Bold);
+	text.setPosition(x, y);
+	text.setString(message);
+	return text;
+}
 void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff, int sd)
 {
 	int menunum = 0;
@@ -65,27 +77,22 @@ void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff
 	about.loadFromFile(FILES::MENU::IMAGES::MENU1);
 	exit.loadFromFile(FILES::MENU::IMAGES::MENU2);
 	recordt.loadFromImage(record);
-	Sprite menuMain(main), menuAbout(about), menuExit(exit), menubackground(background), menuRecord(recordt);
-	menubackground.setPosition(0, 0);
+	Sprite menuMain(main), menuAbout(about), menuExit(exit), menuBackground(background), menuRecord(recordt);
+	menuBackground.setPosition(0, 0);
 	menuMain.setPosition(250, 240);
 	menuAbout.setPosition(250, 340);
 	menuExit.setPosition(250, 440);
 	menuRecord.setPosition(0, 540);
-	Text ftext;
-	ftext.setFont(font);
-	ftext.setCharacterSize(32);
-	ftext.setFillColor(sf::Color::Black);
-	ftext.setStyle(sf::Text::Bold);
-	ftext.setPosition(130, 540);
+	sf::Text bestResultText = createMessage("YOU DON'T WIN YET", font, 32, sf::Color::Black, 130, 540);
 	std::ostringstream stringh, stringd;
 	if (buff <= 0 || buff > 300)
 	{
-		ftext.setString("YOU DON'T WIN YET");
+		sf::Text bestResultText = createMessage("YOU DON'T WIN YET", font, 32, sf::Color::Black, 130, 540);
 	}
 	else {
 		int ftime = buff / 60, fminutes = buff - (ftime * 60);
 		stringh << fminutes; stringd << ftime;
-		ftext.setString(stringd.str() + " : " + stringh.str());
+		sf::Text bestResultText = createMessage(String(stringd.str() + " : " + stringh.str()), font, 32, sf::Color::Black, 130, 540);
 	}
 	while (isMenu)
 	{
@@ -101,57 +108,51 @@ void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff
 			if (menunum == 2) { isdMenu = true; isMenu = false; }
 			if (menunum == 3) { window.close(); isMenu = false; }
 		}
-		window.draw(menubackground); window.draw(menuMain); window.draw(menuAbout); window.draw(menuExit); window.draw(menuRecord);
-		window.draw(ftext); window.display();
+		window.draw(menuBackground); window.draw(menuMain); window.draw(menuAbout); window.draw(menuExit); window.draw(menuRecord);
+		window.draw(bestResultText); window.display();
 	};
 }
 void menum(RenderWindow& window, bool playMusic)
 {
-	Texture measy, mmedium, mhard, background, mtimed;
+	Texture menuEasy, menuMedium, menuHard, background, menuTimed;
 	background.loadFromFile(FILES::MENU::IMAGES::BACKGROUND);
-	measy.loadFromFile(FILES::MENU::IMAGES::MENU3);
-	mmedium.loadFromFile(FILES::MENU::IMAGES::MENU4);
-	mhard.loadFromFile(FILES::MENU::IMAGES::MENU5);
-	mtimed.loadFromFile(FILES::MENU::IMAGES::MENU6);
-	Sprite menu1(measy), menu2(mmedium), menu3(mhard), menubackground(background), menu4(mtimed);
+	menuEasy.loadFromFile(FILES::MENU::IMAGES::MENU3);
+	menuMedium.loadFromFile(FILES::MENU::IMAGES::MENU4);
+	menuHard.loadFromFile(FILES::MENU::IMAGES::MENU5);
+	menuTimed.loadFromFile(FILES::MENU::IMAGES::MENU6);
+	Sprite menu1(menuEasy), menu2(menuMedium), menu3(menuHard), menuBackground(background), menu4(menuTimed);
 	menu1.setPosition(80, 200);
 	menu2.setPosition(390, 200);
 	menu3.setPosition(80, 300);
 	menu4.setPosition(390, 300);
-	int menudif = 0;
+	int menuDifficulty = 0;
 	while (isdMenu)
 	{
 		menu1.setColor(Color::White); menu2.setColor(Color::White); menu3.setColor(Color::White); menu4.setColor(Color::White);
-		if (IntRect(80, 200, 225, 45).contains(Mouse::getPosition(window))) { menu1.setColor(Color::Cyan); menudif = 1; }
-		if (IntRect(390, 200, 225, 45).contains(Mouse::getPosition(window))) { menu2.setColor(Color::Cyan); menudif = 2; }
-		if (IntRect(80, 300, 225, 45).contains(Mouse::getPosition(window))) { menu3.setColor(Color::Cyan); menudif = 3; }
-		if (IntRect(390, 300, 225, 45).contains(Mouse::getPosition(window))) { menu4.setColor(Color::Cyan); menudif = 4; }
+		if (IntRect(80, 200, 225, 45).contains(Mouse::getPosition(window))) { menu1.setColor(Color::Cyan); menuDifficulty = 1; }
+		if (IntRect(390, 200, 225, 45).contains(Mouse::getPosition(window))) { menu2.setColor(Color::Cyan); menuDifficulty = 2; }
+		if (IntRect(80, 300, 225, 45).contains(Mouse::getPosition(window))) { menu3.setColor(Color::Cyan); menuDifficulty = 3; }
+		if (IntRect(390, 300, 225, 45).contains(Mouse::getPosition(window))) { menu4.setColor(Color::Cyan); menuDifficulty = 4; }
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
-			if (menudif == 1) { playMusic = false; delelle = DIFFICULTY::EASY; isdMenu = false; }
-			if (menudif == 2) { delelle = DIFFICULTY::MEDIUM; isdMenu = false; }
-			if (menudif == 3) { delelle = DIFFICULTY::HARD; isdMenu = false; }
-			if (menudif == 4) { settimelimit = true; delelle = DIFFICULTY::DEFAULT;  isdMenu = false; }
-		}window.clear(); window.draw(menubackground); window.draw(menu1); window.draw(menu2); window.draw(menu3); window.draw(menu4); window.display();
+			if (menuDifficulty == 1) { playMusic = false; delelle = DIFFICULTY::EASY; isdMenu = false; }
+			if (menuDifficulty == 2) { delelle = DIFFICULTY::MEDIUM; isdMenu = false; }
+			if (menuDifficulty == 3) { delelle = DIFFICULTY::HARD; isdMenu = false; }
+			if (menuDifficulty == 4) { settimelimit = true; delelle = DIFFICULTY::DEFAULT;  isdMenu = false; }
+		}window.clear(); window.draw(menuBackground); window.draw(menu1); window.draw(menu2); window.draw(menu3); window.draw(menu4); window.display();
 	}
 }
 void finalscreen(RenderWindow& window, Text text, Font font, Sound winsound, bool playMusic, int second, int buff, bool start);
 void setTimeLimit(int minutes, int time, Text text, Font font, RenderWindow& window, Sound losesound, bool playMusic)
 {   
 	if (playMusic) { losesound.setVolume(100); losesound.play(); }
-	Text ftext;
-	ftext.setFont(font);
-	ftext.setCharacterSize(24);
-	ftext.setFillColor(sf::Color(20, 20, 60));
-	ftext.setStyle(sf::Text::Bold);
-	ftext.setPosition(310, 200);
-	ftext.setString("YOU LOSE!");
+	sf::Text loseText = createMessage("YOU LOSE!", font);
 	while (minutes == 5 && time == 1)
 	{
 		text.setPosition(310, 300);
 		window.clear();
 		window.draw(text);
-		window.draw(ftext);
+		window.draw(loseText);
 		window.display();
 	}
 }
@@ -232,12 +233,7 @@ int main()
 	Event event;
 	Clock clock;
 	String strtime;
-	Text text;
-	text.setFont(font);
-	text.setCharacterSize(24);
-	text.setFillColor(sf::Color(20, 20, 60));
-	text.setStyle(sf::Text::Bold);
-	text.setPosition(600, 0);
+	sf::Text gameOverText = createMessage("GAME OVER", font, 24, sf::Color(20, 20, 60), 600, 0);
 	int x = -1, y = -1, x1, y1;
 	char number1;
 	bool checkisnumber = false;
@@ -265,13 +261,13 @@ int main()
 		second = timet;
 		if (timet % 60 == 0) { minutes = timet / 60; }
 		timet = timet - (minutes * 60);
-		if (settimelimit == true) { setTimeLimit(minutes, timet, text, font, window, losesound, playMusic); }
+		if (settimelimit == true) { setTimeLimit(minutes, timet, gameOverText, font, window, losesound, playMusic); }
 		std::ostringstream strings, stringm;
 		stringm << minutes; strings << timet;
-		if (timet < 10 && minutes < 10)text.setString("Game time\n\t\t\t0" + stringm.str() + " : 0" + strings.str());
-		else if (timet < 10)text.setString("Game time\n\t\t\t" + stringm.str() + " : " + "0" + strings.str());
-		else text.setString("Game time\n\t\t\t" + stringm.str() + " : " + strings.str());
-		text.setPosition(600, 0);
+		if (timet < 10 && minutes < 10)gameOverText.setString("Game time\n\t\t\t0" + stringm.str() + " : 0" + strings.str());
+		else if (timet < 10)gameOverText.setString("Game time\n\t\t\t" + stringm.str() + " : " + "0" + strings.str());
+		else gameOverText.setString("Game time\n\t\t\t" + stringm.str() + " : " + strings.str());
+		gameOverText.setPosition(600, 0);
 		x1 = x; y1 = y;
 		while (window.pollEvent(event))
 		{
@@ -575,11 +571,11 @@ int main()
 			}
 		}
 
-		window.draw(text);
+		window.draw(gameOverText);
 		window.draw(mmain); 
 		window.draw(mexit);
 		window.display();
-		if (isTue == 1) { finalscreen(window, text, font, winsound, playMusic, second, buff, start); }
+		if (isTue == 1) { finalscreen(window, gameOverText, font, winsound, playMusic, second, buff, start); }
 	}
 }
 void finalscreen(RenderWindow& window, Text text, Font font, Sound winsound, bool playMusic, int second, int buff, bool start)
@@ -588,13 +584,7 @@ void finalscreen(RenderWindow& window, Text text, Font font, Sound winsound, boo
 	if (isTue == true && second > 10)
 	{  
 		if (playMusic) { winsound.setVolume(100); winsound.play(); }
-		Text ftext;
-		ftext.setFont(font);
-		ftext.setCharacterSize(24);
-		ftext.setFillColor(sf::Color(20, 20, 60));
-		ftext.setStyle(sf::Text::Bold);
-		ftext.setPosition(310, 200);
-		ftext.setString("YOU WIN!");
+		sf::Text winText = createMessage("YOU WIN!", font);
 		std::ofstream highscore;
 		highscore.open("highscore.txt");
 		if (highscore.is_open())
@@ -610,7 +600,7 @@ void finalscreen(RenderWindow& window, Text text, Font font, Sound winsound, boo
 			text.setPosition(310, 300);
 			window.clear();
 			window.draw(text);
-			window.draw(ftext);
+			window.draw(winText);
 			window.display();
 		}
 	}
