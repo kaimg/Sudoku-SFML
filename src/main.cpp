@@ -12,14 +12,14 @@ namespace FILES {
     namespace MENU {
         namespace IMAGES {
             const std::string BACKGROUND = "resources/images/menu/background.jpg";
-            const std::string MENU = "resources/images/menu/menu.png";
-            const std::string MENU1 = "resources/images/menu/menu1.png";
-            const std::string MENU2 = "resources/images/menu/menu2.png";
-            const std::string MENU3 = "resources/images/menu/menu3.png";
-            const std::string MENU4 = "resources/images/menu/menu4.png";
-            const std::string MENU5 = "resources/images/menu/menu5.png";
-            const std::string MENU6 = "resources/images/menu/menu6.png";
-            const std::string MENU7 = "resources/images/menu/menu7.png";
+            const std::string MENU = "resources/images/menu/button_new_game.png";
+            const std::string MENU1 = "resources/images/menu/button_options.png";
+            const std::string MENU2 = "resources/images/menu/button_exit.png";
+            const std::string MENU3 = "resources/images/menu/button_easy.png";
+            const std::string MENU4 = "resources/images/menu/button_medium.png";
+            const std::string MENU5 = "resources/images/menu/button_hard.png";
+            const std::string MENU6 = "resources/images/menu/button_timed.png";
+            const std::string MENU7 = "resources/images/menu/button_record.png";
         }
 
         namespace SOUNDS {
@@ -57,7 +57,13 @@ namespace DIFFICULTY {
 		const int TIMED = 4;
 	}
 }
-
+namespace MENU {
+	namespace STATE {
+		const int NEW_GAME = 1;
+		const int OPTIONS = 2;
+		const int EXIT = 3;
+	}
+}
 
 bool isDifficultyMenuActive = false;
 bool isTimeLimitActive = false;
@@ -65,7 +71,7 @@ bool isMainMenuActive = true;
 
 int selectedDifficulty = DIFFICULTY::OPTION::NONE;
 
-namespace UI {
+namespace UI {	
 	namespace POSITION {
 		const sf::Vector2f BACKGROUND(0.f, 0.f);
         const sf::Vector2f MENU_MAIN(250.f, 240.f);
@@ -96,13 +102,13 @@ void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff
 	Image record;
 	record.loadFromFile(FILES::MENU::IMAGES::MENU7);
 	record.createMaskFromColor(Color::White);
-	Texture main, about, exit, background, recordt;
-	background.loadFromFile(FILES::MENU::IMAGES::BACKGROUND);
-	main.loadFromFile(FILES::MENU::IMAGES::MENU);
-	about.loadFromFile(FILES::MENU::IMAGES::MENU1);
-	exit.loadFromFile(FILES::MENU::IMAGES::MENU2);
-	recordt.loadFromImage(record);
-	Sprite menuMain(main), menuAbout(about), menuExit(exit), menuBackground(background), menuRecord(recordt);
+	Texture mainTexture, aboutTexture, exitTexture, backgroundTexture, recordTexture;
+	backgroundTexture.loadFromFile(FILES::MENU::IMAGES::BACKGROUND);
+	mainTexture.loadFromFile(FILES::MENU::IMAGES::MENU);
+	aboutTexture.loadFromFile(FILES::MENU::IMAGES::MENU1);
+	exitTexture.loadFromFile(FILES::MENU::IMAGES::MENU2);
+	recordTexture.loadFromImage(record);
+	Sprite menuMain(mainTexture), menuAbout(aboutTexture), menuExit(exitTexture), menuBackground(backgroundTexture), menuRecord(recordTexture);
 	menuBackground.setPosition(UI::POSITION::BACKGROUND);
 	menuMain.setPosition(UI::POSITION::MENU_MAIN);
 	menuAbout.setPosition(UI::POSITION::MENU_ABOUT);
@@ -123,15 +129,15 @@ void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff
 	{
 		menuMain.setColor(Color::White); menuAbout.setColor(Color::White); menuExit.setColor(Color::White); menuRecord.setColor(Color::White);
 		//window.clear(Color::White);
-		if (IntRect(250, 240, 225, 45).contains(Mouse::getPosition(window))) { menuMain.setColor(Color::Cyan); menunum = 1; }
-		if (IntRect(250, 340, 225, 45).contains(Mouse::getPosition(window))) { menuAbout.setColor(Color::Cyan); menunum = 2; }
-		if (IntRect(250, 440, 225, 45).contains(Mouse::getPosition(window))) { menuExit.setColor(Color::Cyan); menunum = 3; }
+		if (IntRect(250, 240, 225, 45).contains(Mouse::getPosition(window))) { menuMain.setColor(Color::Cyan); menunum = MENU::STATE::NEW_GAME; }
+		if (IntRect(250, 340, 225, 45).contains(Mouse::getPosition(window))) { menuAbout.setColor(Color::Cyan); menunum = MENU::STATE::OPTIONS; }
+		if (IntRect(250, 440, 225, 45).contains(Mouse::getPosition(window))) { menuExit.setColor(Color::Cyan); menunum = MENU::STATE::EXIT; }
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
 			sound.play();
-			if (menunum == 1) { isMainMenuActive = false; }
-			if (menunum == 2) { isDifficultyMenuActive = true; isMainMenuActive = false; }
-			if (menunum == 3) { window.close(); isMainMenuActive = false; }
+			if (menunum == MENU::STATE::NEW_GAME) { isMainMenuActive = false; }
+			if (menunum == MENU::STATE::OPTIONS) { isDifficultyMenuActive = true; isMainMenuActive = false; }
+			if (menunum == MENU::STATE::EXIT) { window.close(); isMainMenuActive = false; }
 		}
 		window.draw(menuBackground); window.draw(menuMain); window.draw(menuAbout); window.draw(menuExit); window.draw(menuRecord);
 		window.draw(bestResultText); window.display();
