@@ -9,6 +9,10 @@
 #include "filler.h"
 using namespace sf; 
 namespace FILES {
+	namespace NAME {
+		const std::string HIGH_SCORE = "../highscore.txt";
+	}
+	
     namespace MENU {
         namespace IMAGES {
             const std::string BACKGROUND = "resources/images/menu/background.jpg";
@@ -193,7 +197,7 @@ int main()
 	int buff = -1000;
 	int sd;
 	std::ifstream fin;
-	fin.open(("highscore.txt"));
+	fin.open(FILES::NAME::HIGH_SCORE);
 	if (fin.is_open())
 	{
 		while (!fin.eof())
@@ -205,7 +209,7 @@ int main()
 	fin.close();
 	bool playMusic = true;
 	int temp;
-	Time sleep;
+	sf::Time sleep = sf::seconds(1.0f);
 	sf::RenderWindow window(sf::VideoMode(720, 585), "Sudoku", Style::Close | Style::Titlebar);
 	window.setFramerateLimit(60);
 	SoundBuffer buffer;
@@ -268,7 +272,7 @@ int main()
 	sf::Text gameOverText = createMessage("GAME OVER", font, 24, sf::Color(20, 20, 60), 600, 0);
 	int x = -1, y = -1, x1, y1;
 	char number1;
-	bool checkisnumber = false;
+	bool checkIsNumber = false;
 	bool start = false;
 	int minutes = 0;
 	int second = 0;
@@ -317,7 +321,7 @@ int main()
 			}
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
-				if (event.key.code == sf::Mouse::Left) {
+				if (event.mouseButton.button == sf::Mouse::Left) {
 					if (start) { secnum = timet; second = 0; timet = 0; finish(); }
 					sound.play();
 					if (sudoku[y][x] == 10) { sudoku[y1][x1] = 0; }
@@ -533,16 +537,16 @@ int main()
 		{
 			if (sudoku[y][x] != 10 && sudoku[y][x] != 0)
 			{
-				checkisnumber = true;
+				checkIsNumber = true;
 			}
 		}
-		if (checkisnumber == true)
+		if (checkIsNumber == true)
 		{
 			window.draw(rect);
 			//numberstile.createMaskFromColor(Color::White);
 			numbersS.setTextureRect(IntRect(sudoku[y][x] * 65, 0, 65, 65)); numbersS.setPosition(x * 65, y * 65); window.draw(numbersS);
 		}
-		checkisnumber = false;
+		checkIsNumber = false;
 		if (0 <= x && x < 9 && 0 <= y && y < 9)
 		{
 			for (int i = 0; i < 9; i++)
@@ -591,8 +595,9 @@ void finalScreen(RenderWindow& window, Text text, Font font, Sound winsound, boo
 	{  
 		if (playMusic) { winsound.setVolume(100); winsound.play(); }
 		sf::Text winText = createMessage("YOU WIN!", font);
+		std::cout << second << std::endl;
 		std::ofstream highscore;
-		highscore.open("highscore.txt");
+		highscore.open(FILES::NAME::HIGH_SCORE);
 		if (highscore.is_open())
 		{
 			if (second < buff || buff == 0)
