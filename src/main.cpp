@@ -12,14 +12,14 @@ namespace FILES {
     namespace MENU {
         namespace IMAGES {
             const std::string BACKGROUND = "resources/images/menu/background.jpg";
-            const std::string MENU = "resources/images/menu/button_new_game.png";
-            const std::string MENU1 = "resources/images/menu/button_options.png";
-            const std::string MENU2 = "resources/images/menu/button_exit.png";
-            const std::string MENU3 = "resources/images/menu/button_easy.png";
-            const std::string MENU4 = "resources/images/menu/button_medium.png";
-            const std::string MENU5 = "resources/images/menu/button_hard.png";
-            const std::string MENU6 = "resources/images/menu/button_timed.png";
-            const std::string MENU7 = "resources/images/menu/button_record.png";
+            const std::string BUTTON_NEW_GAME = "resources/images/menu/button_new_game.png";
+            const std::string BUTTON_OPTIONS = "resources/images/menu/button_options.png";
+            const std::string BUTTON_EXIT = "resources/images/menu/button_exit.png";
+            const std::string BUTTON_EASY = "resources/images/menu/button_easy.png";
+            const std::string BUTTON_MEDIUM = "resources/images/menu/button_medium.png";
+            const std::string BUTTON_HARD = "resources/images/menu/button_hard.png";
+            const std::string BUTTON_TIMED = "resources/images/menu/button_timed.png";
+            const std::string BUTTON_RECORD = "resources/images/menu/button_record.png";
         }
 
         namespace SOUNDS {
@@ -96,17 +96,17 @@ sf::Text createMessage(const std::string& message, const sf::Font& font, unsigne
 	text.setString(message);
 	return text;
 }
-void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff, int sd)
+void showMainMenu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff, int sd)
 {
 	int menunum = 0;
 	Image record;
-	record.loadFromFile(FILES::MENU::IMAGES::MENU7);
+	record.loadFromFile(FILES::MENU::IMAGES::BUTTON_RECORD);
 	record.createMaskFromColor(Color::White);
 	Texture mainTexture, aboutTexture, exitTexture, backgroundTexture, recordTexture;
 	backgroundTexture.loadFromFile(FILES::MENU::IMAGES::BACKGROUND);
-	mainTexture.loadFromFile(FILES::MENU::IMAGES::MENU);
-	aboutTexture.loadFromFile(FILES::MENU::IMAGES::MENU1);
-	exitTexture.loadFromFile(FILES::MENU::IMAGES::MENU2);
+	mainTexture.loadFromFile(FILES::MENU::IMAGES::BUTTON_NEW_GAME);
+	aboutTexture.loadFromFile(FILES::MENU::IMAGES::BUTTON_OPTIONS);
+	exitTexture.loadFromFile(FILES::MENU::IMAGES::BUTTON_EXIT);
 	recordTexture.loadFromImage(record);
 	Sprite menuMain(mainTexture), menuAbout(aboutTexture), menuExit(exitTexture), menuBackground(backgroundTexture), menuRecord(recordTexture);
 	menuBackground.setPosition(UI::POSITION::BACKGROUND);
@@ -143,14 +143,14 @@ void menu(RenderWindow& window, Sound sound, bool playMusic, Font font, int buff
 		window.draw(bestResultText); window.display();
 	};
 }
-void menum(RenderWindow& window, bool playMusic)
+void showDifficultyMenu(RenderWindow& window, bool playMusic)
 {
 	Texture menuEasy, menuMedium, menuHard, background, menuTimed;
 	background.loadFromFile(FILES::MENU::IMAGES::BACKGROUND);
-	menuEasy.loadFromFile(FILES::MENU::IMAGES::MENU3);
-	menuMedium.loadFromFile(FILES::MENU::IMAGES::MENU4);
-	menuHard.loadFromFile(FILES::MENU::IMAGES::MENU5);
-	menuTimed.loadFromFile(FILES::MENU::IMAGES::MENU6);
+	menuEasy.loadFromFile(FILES::MENU::IMAGES::BUTTON_EASY);
+	menuMedium.loadFromFile(FILES::MENU::IMAGES::BUTTON_MEDIUM);
+	menuHard.loadFromFile(FILES::MENU::IMAGES::BUTTON_HARD);
+	menuTimed.loadFromFile(FILES::MENU::IMAGES::BUTTON_TIMED);
 	Sprite menu1(menuEasy), menu2(menuMedium), menu3(menuHard), menuBackground(background), menu4(menuTimed);
 	menu1.setPosition(UI::POSITION::MENU_OPTIONS);
 	menu2.setPosition(UI::POSITION::MENU_EXIT);
@@ -226,8 +226,8 @@ int main()
 	back.play();
 	Font font;
 	font.loadFromFile(FILES::GAME::FONTS::BEBAS);
-	menu(window, sound, playMusic, font, buff, 0);
-	if (isDifficultyMenuActive == true) { menum(window, playMusic); }
+	showMainMenu(window, sound, playMusic, font, buff, 0);
+	if (isDifficultyMenuActive == true) { showDifficultyMenu(window, playMusic); }
 	if (playMusic) { back.setVolume(0); losesound.setVolume(0); winsound.setVolume(0); sound.setVolume(0); }
 	a = selectedDifficulty;
 	if (a == 0) { a = DIFFICULTY::DEFAULT; }
@@ -237,12 +237,12 @@ int main()
 	icon.loadFromFile(FILES::GAME::IMAGES::ICON);
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	Texture main;
-	main.loadFromFile(FILES::MENU::IMAGES::MENU);
+	main.loadFromFile(FILES::MENU::IMAGES::BUTTON_NEW_GAME);
 	Sprite mmain(main);
 	mmain.setPosition(605, 80);
 	mmain.setScale(Vector2f(0.5, 0.5));
 	Texture exit;
-	exit.loadFromFile(FILES::MENU::IMAGES::MENU2);
+	exit.loadFromFile(FILES::MENU::IMAGES::BUTTON_EXIT);
 	Sprite mexit(exit);
 	mexit.setPosition(605, 380);
 	mexit.setScale(Vector2f(0.5, 0.5));
